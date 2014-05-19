@@ -7,6 +7,7 @@ module FastList = struct
   external tl : 'a list -> 'a list = "clist_tl"
   external nth : 'a list -> int -> 'a = "clist_nth"
   external rev : 'a list -> 'a list = "clist_rev"
+  external append : 'a list -> 'a list -> 'a list = "clist_append"
 
   external assoc : 'a -> ('a * 'b) list -> 'b = "clist_assoc"
 

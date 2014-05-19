@@ -102,3 +102,24 @@ clist_assoc(value v, value l) {
   /* The key was not found in the list. */
   caml_raise_constant(*caml_named_value("not found"));
 }
+
+CAMLprim value
+clist_append(value l1, value l2) {
+  CAMLparam2(l1, l2);
+  CAMLlocal2(cons, head);
+  if (l1 == Val_emptylist) {
+    CAMLreturn(l2);
+  }
+  head = cons = caml_alloc(2 /* 2 fields - hd/tl */, 0 /* gc tag */);
+  while (l1 != Val_emptylist) {
+    Store_field(cons, 0, Field(l1, 0));
+    if (Field(l1, 1) != Val_emptylist) {
+      value tl = caml_alloc(2 /* 2 fields - hd/tl */, 0 /* gc tag */);
+      Store_field(cons, 1, tl);
+      cons = tl;
+    }
+    l1 = Field(l1, 1);
+  }
+  Store_field(cons, 1, l2);
+  CAMLreturn(head);
+}
