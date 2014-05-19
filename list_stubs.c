@@ -123,3 +123,57 @@ clist_append(value l1, value l2) {
   Store_field(cons, 1, l2);
   CAMLreturn(head);
 }
+
+CAMLprim value
+clist_iter(value f, value v) {
+  CAMLparam2(f, v);
+  while (v != Val_emptylist) {
+    caml_callback(f, Field(v, 0));
+    v = Field(v, 1);
+  }
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value
+clist_iteri(value f, value v) {
+  CAMLparam2(f, v);
+  int idx = 0;
+  while (v != Val_emptylist) {
+    caml_callback2(f, Val_int(idx), Field(v, 0));
+    v = Field(v, 1);
+    idx++;
+  }
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value
+clist_map(value f, value v) {
+  CAMLparam2(f, v);
+  CAMLlocal2(head, cons);
+  if (v == Val_emptylist) {
+    return Val_emptylist;
+  }
+  cons = head = caml_alloc(2 /* 2 fields */, 0 /* gc tag */);
+  while (v != Val_emptylist) {
+    Store_field(cons, 0, caml_callback(f, Field(v, 0)));
+    v = Field(v, 1);
+    if (v != Val_emptylist) {
+      Store_field(cons, 1, caml_alloc(2 /* 2 fields */, 0 /* gc tag */));
+      cons = Field(cons, 1);
+    }
+  }
+  Store_field(cons, 1, Val_emptylist);
+  CAMLreturn(head);
+}
+
+CAMLprim value
+clist_fold_left(value f, value init, value v) {
+  CAMLparam3(f, init, v);
+  CAMLlocal1(head);
+  value acc = init;
+  while (v != Val_emptylist) {
+    acc = caml_callback2(f, acc, Field(v, 0));
+    v = Field(v, 1);
+  }
+  CAMLreturn(acc);
+}

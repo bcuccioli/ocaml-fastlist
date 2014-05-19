@@ -9,6 +9,12 @@ module FastList = struct
   external rev : 'a list -> 'a list = "clist_rev"
   external append : 'a list -> 'a list -> 'a list = "clist_append"
 
+  external iter : ('a -> unit) -> 'a list -> unit = "clist_iter"
+  external iteri : (int -> 'a -> unit) -> 'a list -> unit = "clist_iteri"
+  external map : ('a -> 'b) -> 'a list -> 'b list = "clist_map"
+  external fold_left : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a =
+    "clist_fold_left"
+
   external assoc : 'a -> ('a * 'b) list -> 'b = "clist_assoc"
 
   let _ =
