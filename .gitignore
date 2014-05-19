@@ -1,0 +1,13 @@
+# Vim temporary files
+*.swp
+
+# OCaml compiled files
+clist.mli
+*.cma
+*.cmi
+*.cmo
+
+# C compiled files
+*.so
+*.a
+*.o
