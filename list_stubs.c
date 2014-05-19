@@ -37,11 +37,29 @@ clist_hd(value v) {
 CAMLprim value
 clist_tl(value v) {
   CAMLparam1(v);
-  CAMLlocal1(head);
   if (v == Val_emptylist) {
     /* List is empty, so failwith "hd". */
     caml_failwith("tl");
   }
   v = Field(v, 1);
+  CAMLreturn(v);
+}
+
+CAMLprim value
+clist_nth(value v, value n) {
+  CAMLparam2(v, n);
+  if (Int_val(n) < 0) {
+    caml_invalid_argument("List.nth");
+  }
+  for (int curr = 0; curr < Int_val(n); curr++) {
+    if (v == Val_emptylist) {
+      caml_failwith("nth");
+    }
+    v = Field(v, 1);
+  }
+  if (v == Val_emptylist) {
+    caml_failwith("nth");
+  }
+  v = Field(v, 0);
   CAMLreturn(v);
 }
