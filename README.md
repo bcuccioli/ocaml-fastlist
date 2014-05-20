@@ -17,6 +17,11 @@ module and load it in the top-level, simply run
 
 and then `open Clist;;` in the OCaml top-level.
 
+## TODO
+
+* Implement the remainder of the List module.
+* Experimentally determine performance gains.
+
 ## License
 
 This project is licensed under the MIT Open Source license.
